@@ -13,12 +13,11 @@
       theme: {
         extend: {
           colors: {
-            darkbg: '#080d1a',
-            cardbg: '#0f172a',
-            bordercolor: '#1e293b',
-            accent: '#3b82f6',
-            accenthover: '#2563eb',
-            brandblue: '#60a5fa',
+            darkbg: '#09090b',
+            cardbg: '#18181b',
+            bordercolor: '#27272a',
+            accent: '#f59e0b',
+            accenthover: '#d97706',
           }
         }
       }
@@ -34,22 +33,21 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #080d1a;
+      background-color: #09090b;
       color: #f8fafc;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased bg-darkbg text-[#f8fafc]">
+<body class="min-h-screen flex flex-col antialiased bg-zinc-950 text-zinc-100 selection:bg-amber-500 selection:text-zinc-950">
 
   <div id="root"></div>
 
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
-    // Preset Templates
     const PRESET_TEMPLATES = [
       {
         id: 'affiliate',
@@ -57,13 +55,13 @@
         icon: 'fa-solid fa-money-bill-wave',
         title: 'RAHASIA AFFILIATE SHOPEE TANPA MODAL',
         subtitle: '100% Gratis Untuk Pemula',
-        style: 'Viral YouTube',
+        style: 'Viral YouTube (Warna Mencolok)',
         fontStyle: 'Bold Impact',
-        color: '#FF5722',
-        bgInstruction: 'Futuristic e-commerce warehouse with floating Shopee & TikTok shop delivery packages and money falling',
-        elements: ['Uang', 'Produk Shopee', 'Panah merah', 'Grafik naik'],
+        color: '#FF0055',
+        bgInstruction: 'Latar belakang toko online futuristik dengan paket Shopee & TikTok Shop berterbangan, aura cuan uang berhamburan',
+        elements: ['Panah merah', 'Uang', 'Produk Shopee'],
         expression: 'Sangat Kaget',
-        outfit: 'Casual Hoodie Trendy',
+        outfit: 'Asli / Sesuai Foto',
         position: 'Kiri'
       },
       {
@@ -75,7 +73,7 @@
         style: 'Spiritual / Keagamaan',
         fontStyle: 'Modern',
         color: '#10B981',
-        bgInstruction: 'Serene glowing mosque architecture with warm golden interior lighting, peaceful ambient light rays, soft clouds and divine atmospheric visual depth',
+        bgInstruction: 'Serene glowing mosque architecture with warm golden interior lighting',
         elements: ['Lingkaran merah', 'Kilat'],
         expression: 'Khusyuk & Damai',
         outfit: 'Baju Koko & Peci',
@@ -90,8 +88,8 @@
         style: 'Finance',
         fontStyle: 'Tech',
         color: '#10B981',
-        bgInstruction: 'Glowing dark green financial chart with soaring Bitcoin graphics and green matrix code effect',
-        elements: ['Grafik naik', 'Uang', 'Kilat'],
+        bgInstruction: 'Glowing dark green financial chart with soaring Bitcoin graphics',
+        elements: ['Grafik naik', 'Uang'],
         expression: 'Antusias',
         outfit: 'Jas / Formal Executive',
         position: 'Kanan'
@@ -105,60 +103,14 @@
         style: 'Technology',
         fontStyle: 'Modern',
         color: '#6366F1',
-        bgInstruction: 'Cyberpunk neon studio, glowing holographic AI robot face and digital futuristic particles',
+        bgInstruction: 'Cyberpunk neon studio with glowing holographic AI robot face',
         elements: ['AI Robot', 'Kilat', 'Laptop'],
         expression: 'Antusias',
         outfit: 'Cyberpunk Armor',
         position: 'Kiri'
-      },
-      {
-        id: 'gaming',
-        name: 'Gaming Content',
-        icon: 'fa-solid fa-gamepad',
-        title: 'SOLO VS SQUAD TOP GLOBAL 100 KILLS',
-        subtitle: 'Gameplay Paling Gila!',
-        style: 'Gaming',
-        fontStyle: 'Gaming',
-        color: '#EC4899',
-        bgInstruction: 'Epic game arena with fiery explosions, smoke particles, and dramatic neon red and purple rim lighting',
-        elements: ['Api', 'Kilat'],
-        expression: 'Sangat Kaget',
-        outfit: 'Casual Hoodie Trendy',
-        position: 'Tengah'
-      },
-      {
-        id: 'tutorial',
-        name: 'Tutorial & Education',
-        icon: 'fa-solid fa-graduation-cap',
-        title: 'BISA CODING DARI NOL DALAM 7 HARI',
-        subtitle: 'Panduan Lengkap Pemula',
-        style: 'Education',
-        fontStyle: 'YouTube Style',
-        color: '#3B82F6',
-        bgInstruction: 'Clean modern desk setup with glowing dual monitors displaying colorful code editors and clean ambient light',
-        elements: ['Laptop', 'Smartphone'],
-        expression: 'Profesional',
-        outfit: 'Batik Professional',
-        position: 'Kiri'
-      },
-      {
-        id: 'podcast',
-        name: 'Podcast & Interview',
-        icon: 'fa-solid fa-microphone',
-        title: 'BONGKAR RAHASIA PEMBISNIS 100 MILIAR',
-        subtitle: 'Eksklusif Episode #42',
-        style: 'Podcast',
-        fontStyle: 'Modern',
-        color: '#F59E0B',
-        bgInstruction: 'Dark cozy podcast studio with warm vintage Edison lamps, professional studio microphone and acoustic foam background',
-        elements: ['Ikon YouTube'],
-        expression: 'Profesional',
-        outfit: 'Jas / Formal Executive',
-        position: 'Kiri'
       }
     ];
 
-    // Additional Visual Elements List
     const EXTRA_ELEMENTS = [
       { id: 'Panah merah', label: 'Panah Merah', icon: 'fa-solid fa-arrow-right text-red-500' },
       { id: 'Lingkaran merah', label: 'Lingkaran Merah', icon: 'fa-solid fa-bullseye text-red-500' },
@@ -174,135 +126,26 @@
       { id: 'Ikon YouTube', label: 'Badge YouTube', icon: 'fa-brands fa-youtube text-red-600' }
     ];
 
-    const MANDATORY_QUALITY_TAGS = "ultra detailed, professional youtube thumbnail, viral thumbnail design, high ctr composition, ultra sharp focus, dramatic studio lighting, 8k resolution, masterpiece visual depth, eye-catching saturation";
-    const MANDATORY_NEGATIVE_TAGS = "blurry, low quality, watermark, extra fingers, deformed face, bad anatomy, cropped face, duplicate person, text artifacts, messy composition, low contrast";
-
     function App() {
-      // Input Form States
       const [title, setTitle] = useState("RAHASIA AFFILIATE SHOPEE TANPA MODAL");
       const [subtitle, setSubtitle] = useState("100% Gratis Untuk Pemula");
-      const [personImage, setPersonImage] = useState(null);
-      const [logoImage, setLogoImage] = useState(null);
-      const [productImages, setProductImages] = useState([]);
       const [aspectRatio, setAspectRatio] = useState("16:9");
-      const [customWidth, setCustomWidth] = useState(1280);
-      const [customHeight, setCustomHeight] = useState(720);
       const [style, setStyle] = useState("Viral YouTube");
       const [bgInstruction, setBgInstruction] = useState("Latar belakang toko online futuristik dengan paket Shopee & TikTok Shop berterbangan, aura cuan uang berhamburan");
       const [fontStyle, setFontStyle] = useState("Bold Impact");
-      const [dominantColor, setDominantColor] = useState("#3b82f6");
+      const [dominantColor, setDominantColor] = useState("#FF0055");
       const [personPosition, setPersonPosition] = useState("Kiri");
       const [expression, setExpression] = useState("Sangat Kaget");
-      
-      // Controls
       const [personOutfit, setPersonOutfit] = useState("Asli / Sesuai Foto");
-      const [personAutoAdjust, setPersonAutoAdjust] = useState(true);
-      const [personScale, setPersonScale] = useState(100);
-      const [personOffsetY, setPersonOffsetY] = useState(0);
-
-      const [logoAutoAdjust, setLogoAutoAdjust] = useState(true);
-      const [logoPosition, setLogoPosition] = useState("Atas-Kanan");
-      const [logoScale, setLogoScale] = useState(100);
-
-      const [productAutoAdjust, setProductAutoAdjust] = useState(true);
-      const [productPosition, setProductPosition] = useState("Kanan-Bawah");
-      const [productScale, setProductScale] = useState(100);
 
       const [selectedElements, setSelectedElements] = useState(["Panah merah", "Uang", "Produk Shopee"]);
       const [customElementInput, setCustomElementInput] = useState("");
 
-      // Process & Result States
       const [generatedPrompt, setGeneratedPrompt] = useState("");
       const [generatedImageUrl, setGeneratedImageUrl] = useState("");
       const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false);
       const [isGeneratingImage, setIsGeneratingImage] = useState(false);
-      const [isAnalyzingTitle, setIsAnalyzingTitle] = useState(false);
-      const [isGeneratingBg, setIsGeneratingBg] = useState(false);
-      const [isEnhancingPrompt, setIsEnhancingPrompt] = useState(false);
       const [activeTab, setActiveTab] = useState("editor");
-      const [historyList, setHistoryList] = useState([]);
-      const [copiedPrompt, setCopiedPrompt] = useState(false);
-      const [errorMessage, setErrorMessage] = useState("");
-      const [ctrScore, setCtrScore] = useState(null);
-
-      // Refs
-      const personInputRef = useRef(null);
-      const logoInputRef = useRef(null);
-      const productInputRef = useRef(null);
-
-      useEffect(() => {
-        try {
-          const saved = localStorage.getItem('ai_thumbnail_history');
-          if (saved) setHistoryList(JSON.parse(saved));
-        } catch (e) {
-          console.error("Failed to load history", e);
-        }
-      }, []);
-
-      const saveToHistory = (imageUrl, promptText) => {
-        const newItem = {
-          id: Date.now(),
-          title: title || "Untitled Thumbnail",
-          prompt: promptText,
-          image: imageUrl,
-          aspectRatio,
-          date: new Date().toLocaleDateString('id-ID', {
-            day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
-          })
-        };
-        const updated = [newItem, ...historyList].slice(0, 20);
-        setHistoryList(updated);
-        try {
-          localStorage.setItem('ai_thumbnail_history', JSON.stringify(updated));
-        } catch (e) {}
-      };
-
-      const deleteHistoryItem = (id) => {
-        const updated = historyList.filter(item => item.id !== id);
-        setHistoryList(updated);
-        localStorage.setItem('ai_thumbnail_history', JSON.stringify(updated));
-      };
-
-      const clearAllHistory = () => {
-        setHistoryList([]);
-        localStorage.removeItem('ai_thumbnail_history');
-      };
-
-      const handleImageUpload = (file, setter) => {
-        if (!file) return;
-        if (file.size > 20 * 1024 * 1024) {
-          setErrorMessage("Ukuran file maksimal 20 MB!");
-          return;
-        }
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          setter(e.target.result);
-          setErrorMessage("");
-        };
-        reader.readAsDataURL(file);
-      };
-
-      const handleProductUpload = (files) => {
-        if (!files || files.length === 0) return;
-        const fileList = Array.from(files);
-        if (productImages.length + fileList.length > 5) {
-          setErrorMessage("Maksimal 5 gambar produk yang dapat diunggah!");
-          return;
-        }
-        setErrorMessage("");
-        fileList.forEach((file) => {
-          if (file.size > 20 * 1024 * 1024) return;
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            setProductImages((prev) => (prev.length >= 5 ? prev : [...prev, e.target.result]));
-          };
-          reader.readAsDataURL(file);
-        });
-      };
-
-      const removeProductImage = (index) => {
-        setProductImages((prev) => prev.filter((_, i) => i !== index));
-      };
 
       const toggleElement = (elemId) => {
         if (selectedElements.includes(elemId)) {
@@ -315,9 +158,8 @@
       const handleAddCustomElement = (e) => {
         e?.preventDefault();
         if (!customElementInput.trim()) return;
-        const trimmed = customElementInput.trim();
-        if (!selectedElements.includes(trimmed)) {
-          setSelectedElements([...selectedElements, trimmed]);
+        if (!selectedElements.includes(customElementInput.trim())) {
+          setSelectedElements([...selectedElements, customElementInput.trim()]);
         }
         setCustomElementInput("");
       };
@@ -330,419 +172,373 @@
         setDominantColor(preset.color);
         setBgInstruction(preset.bgInstruction);
         setSelectedElements(preset.elements);
-        setExpression(preset.expression || "Normal");
-        if (preset.outfit) setPersonOutfit(preset.outfit);
+        setExpression(preset.expression);
+        setPersonOutfit(preset.outfit);
         setPersonPosition(preset.position);
-        setActiveTab("editor");
       };
 
       const handleGeneratePrompt = () => {
         setIsGeneratingPrompt(true);
-        setErrorMessage("");
         setTimeout(() => {
-          const compiled = `High-CTR YouTube Thumbnail Prompt (${style}):\n- Main Subject: Person on ${personPosition} with ${expression} expression wearing ${personOutfit}.\n- Title: "${title}" (Subtitle: "${subtitle}") in ${fontStyle} font with Hex ${dominantColor} stroke.\n- Environment: ${bgInstruction}.\n- Visual Hooks: ${selectedElements.join(', ')}.\n- Aspect Ratio: ${aspectRatio}.\n\n[QUALITY]: ${MANDATORY_QUALITY_TAGS}\n[NEGATIVE]: ${MANDATORY_NEGATIVE_TAGS}`;
-          setGeneratedPrompt(compiled);
-          setCtrScore((8.5 + Math.random() * 1.2).toFixed(1));
+          setGeneratedPrompt(`High-CTR YouTube thumbnail design. Main Title "${title}" in giant bold ${fontStyle} text with black drop shadow and ${dominantColor} glowing stroke. ${personPosition} side features a person with ${expression} expression wearing ${personOutfit}. Background: ${bgInstruction}. Includes ${selectedElements.join(", ")}. Dramatic lighting, vibrant contrast, 8k quality, masterpiece.`);
           setIsGeneratingPrompt(false);
-        }, 1000);
+        }, 800);
       };
 
       const handleGenerateThumbnail = () => {
         if (!generatedPrompt) handleGeneratePrompt();
         setIsGeneratingImage(true);
-        setErrorMessage("");
-
         setTimeout(() => {
-          createCanvasFallbackThumbnail();
+          const canvas = document.createElement('canvas');
+          canvas.width = 1280; canvas.height = 720;
+          const ctx = canvas.getContext('2d');
+          
+          const bgGrad = ctx.createLinearGradient(0, 0, 1280, 720);
+          bgGrad.addColorStop(0, '#0f172a');
+          bgGrad.addColorStop(0.5, dominantColor);
+          bgGrad.addColorStop(1, '#09090b');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, 1280, 720);
+
+          ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 20;
+          ctx.font = '900 64px sans-serif'; ctx.fillStyle = '#FFDD00';
+          ctx.fillText(title.toUpperCase(), 80, 360);
+
+          setGeneratedImageUrl(canvas.toDataURL('image/png'));
           setIsGeneratingImage(false);
-        }, 1200);
-      };
-
-      const createCanvasFallbackThumbnail = () => {
-        const canvas = document.createElement('canvas');
-        let width = 1280;
-        let height = 720;
-
-        if (aspectRatio === "9:16") { width = 1080; height = 1920; }
-        else if (aspectRatio === "1:1") { width = 1080; height = 1080; }
-        else if (aspectRatio === "4:5") { width = 1080; height = 1350; }
-        else if (aspectRatio === "Custom") { width = customWidth; height = customHeight; }
-
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-
-        const bgGrad = ctx.createLinearGradient(0, 0, width, height);
-        bgGrad.addColorStop(0, '#0f172a');
-        bgGrad.addColorStop(0.5, dominantColor);
-        bgGrad.addColorStop(1, '#080d1a');
-        ctx.fillStyle = bgGrad;
-        ctx.fillRect(0, 0, width, height);
-
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-        ctx.lineWidth = 3;
-        for (let x = 0; x < width; x += 80) {
-          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
-        }
-
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
-        ctx.shadowBlur = 20;
-        ctx.shadowOffsetX = 4;
-        ctx.shadowOffsetY = 4;
-
-        ctx.font = `900 ${Math.floor(height * 0.08)}px sans-serif`;
-        ctx.fillStyle = '#FFFFFF';
-        ctx.textAlign = personPosition === 'Kiri' ? 'right' : 'left';
-        const textX = personPosition === 'Kiri' ? width - 80 : 80;
-        let startY = height * 0.4;
-
-        ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 12;
-        ctx.strokeText(title.toUpperCase(), textX, startY);
-        ctx.fillStyle = '#FFDD00';
-        ctx.fillText(title.toUpperCase(), textX, startY);
-
-        if (subtitle) {
-          ctx.font = `700 ${Math.floor(height * 0.045)}px sans-serif`;
-          ctx.strokeStyle = '#000000';
-          ctx.lineWidth = 8;
-          ctx.strokeText(subtitle, textX, startY + (height * 0.1));
-          ctx.fillStyle = '#FFFFFF';
-          ctx.fillText(subtitle, textX, startY + (height * 0.1));
-        }
-
-        const dataUrl = canvas.toDataURL('image/png');
-        setGeneratedImageUrl(dataUrl);
-        saveToHistory(dataUrl, generatedPrompt || "Generated Canvas Thumbnail");
-      };
-
-      const handleDownload = (format) => {
-        if (!generatedImageUrl) return;
-        const link = document.createElement('a');
-        link.download = `AI-Thumbnail-${Date.now()}.${format}`;
-        link.href = generatedImageUrl;
-        link.click();
-      };
-
-      const copyPromptToClipboard = () => {
-        if (!generatedPrompt) return;
-        navigator.clipboard.writeText(generatedPrompt);
-        setCopiedPrompt(true);
-        setTimeout(() => setCopiedPrompt(false), 2000);
+        }, 1000);
       };
 
       return (
-        <div className="flex flex-col min-h-screen bg-darkbg text-[#f8fafc]">
+        <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
           
-          {/* Top Bar Navigation */}
-          <header className="border-b border-bordercolor bg-cardbg/80 backdrop-blur px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-30">
-            <div className="flex items-center space-x-3">
-              <div className="bg-accent/10 border border-accent/30 p-2.5 rounded-xl text-accent flex items-center justify-center shadow-sm">
-                <i className="fa-solid fa-wand-magic-sparkles text-xl"></i>
+          {/* Top Navbar */}
+          <header className="border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-md sticky top-0 z-40 px-4 lg:px-8 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 p-[2px] flex items-center justify-center shadow-lg shadow-amber-500/10">
+                <div className="w-full h-full bg-zinc-950 rounded-[10px] flex items-center justify-center">
+                  <i className="fa-solid fa-wand-magic-sparkles text-amber-400 text-sm"></i>
+                </div>
               </div>
               <div>
-                <h1 className="font-extrabold text-lg tracking-wide text-white flex items-center gap-2 leading-tight">
+                <h1 className="text-lg font-black tracking-tight bg-gradient-to-r from-amber-400 via-rose-300 to-indigo-300 bg-clip-text text-transparent">
                   AI Thumbnail Maker
                 </h1>
-                <div className="flex items-center space-x-2 text-[11px] leading-snug">
-                  <a href="https://www.buanamedia.my.id" target="_blank" rel="noopener noreferrer" className="text-accent hover:text-brandblue font-semibold hover:underline flex items-center gap-1">
-                    <span>By Buana Media</span>
-                    <i className="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                  </a>
-                  <span className="text-gray-600">•</span>
-                  <span className="text-gray-400">Viral Thumbnail Generator</span>
-                </div>
+                <p className="text-[11px] text-zinc-400 font-medium leading-none">Create Viral Thumbnails with AI</p>
               </div>
             </div>
 
-            {/* Navigation Tabs */}
-            <div className="bg-cardbg border border-bordercolor p-1 rounded-xl flex space-x-1">
+            {/* Nav Tabs Center */}
+            <div className="flex items-center bg-zinc-900 p-1 rounded-xl border border-zinc-800 text-xs font-semibold">
               <button
                 onClick={() => setActiveTab('editor')}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-2 ${activeTab === 'editor' ? 'bg-accent text-white shadow' : 'text-gray-400 hover:text-white'}`}
+                className={`flex items-center gap-2 px-4 py-1.5 rounded-lg transition-all ${activeTab === 'editor' ? 'bg-amber-500 text-zinc-950 font-bold shadow' : 'text-zinc-400 hover:text-zinc-200'}`}
               >
-                <i className="fa-solid fa-sliders"></i>
-                <span>Editor Studio</span>
+                <i className="fa-solid fa-wand-magic-sparkles"></i> Studio Editor
               </button>
               <button
                 onClick={() => setActiveTab('templates')}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-2 ${activeTab === 'templates' ? 'bg-accent text-white shadow' : 'text-gray-400 hover:text-white'}`}
+                className={`flex items-center gap-2 px-4 py-1.5 rounded-lg transition-all ${activeTab === 'templates' ? 'bg-amber-500 text-zinc-950 font-bold shadow' : 'text-zinc-400 hover:text-zinc-200'}`}
               >
-                <i className="fa-solid fa-layer-group"></i>
-                <span>Template</span>
+                <i className="fa-solid fa-layer-group"></i> Presets & Templates
               </button>
               <button
                 onClick={() => setActiveTab('history')}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-2 ${activeTab === 'history' ? 'bg-accent text-white shadow' : 'text-gray-400 hover:text-white'}`}
+                className={`flex items-center gap-2 px-4 py-1.5 rounded-lg transition-all ${activeTab === 'history' ? 'bg-amber-500 text-zinc-950 font-bold shadow' : 'text-zinc-400 hover:text-zinc-200'}`}
               >
-                <i className="fa-solid fa-clock-rotate-left"></i>
-                <span>Riwayat ({historyList.length})</span>
+                <i className="fa-solid fa-clock-rotate-left"></i> History (0)
               </button>
+            </div>
+
+            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs font-medium text-zinc-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>Google Gemini AI Ready</span>
             </div>
           </header>
 
-          {/* Main Grid Workspace */}
-          <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6">
-
-            {/* TEMPLATES VIEW */}
-            {activeTab === 'templates' && (
-              <div className="space-y-6">
-                <div className="bg-cardbg border border-bordercolor p-6 rounded-2xl">
-                  <h2 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
-                    <i className="fa-solid fa-border-all text-accent"></i> Pilih Preset Thumbnail
-                  </h2>
-                  <p className="text-xs text-gray-400 mb-6">Pilih template niche terpopuler untuk langsung mengisi parameter prompt visual secara otomatis.</p>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {PRESET_TEMPLATES.map((tmpl) => (
-                      <div
-                        key={tmpl.id}
-                        onClick={() => applyPreset(tmpl)}
-                        className="bg-darkbg border border-bordercolor hover:border-accent p-5 rounded-xl transition cursor-pointer flex flex-col justify-between group"
-                      >
-                        <div>
-                          <div className="flex items-center justify-between mb-3">
-                            <i className={`${tmpl.icon} text-2xl text-accent`}></i>
-                            <span className="text-[10px] px-2.5 py-1 rounded-full font-bold bg-cardbg text-brandblue border border-bordercolor">
-                              {tmpl.style}
-                            </span>
-                          </div>
-                          <h3 className="font-bold text-sm text-white group-hover:text-accent transition-colors mb-1">{tmpl.name}</h3>
-                          <p className="text-xs font-mono text-gray-400 bg-cardbg p-2 rounded-lg border border-bordercolor mb-3 truncate">"{tmpl.title}"</p>
-                        </div>
-                        <button className="w-full py-2 bg-cardbg group-hover:bg-accent text-gray-200 group-hover:text-white text-xs font-bold rounded-xl transition">
-                          Gunakan Template
-                        </button>
+          {/* Main Grid Workspace - 3 COLUMNS EXACT MATCH */}
+          <main className="flex-1 max-w-[1800px] w-full mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5">
+            
+            {/* COLUMN 1: LEFT SIDEBAR (Col 3) */}
+            <div className="lg:col-span-3 space-y-4">
+              
+              {/* Quick Start Panel */}
+              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-xs text-zinc-200 flex items-center gap-2">
+                    <i className="fa-solid fa-bolt text-amber-400"></i> Template Quick Start
+                  </h3>
+                  <button onClick={() => setActiveTab('templates')} className="text-[11px] text-amber-400 hover:underline font-semibold">Lihat Semua</button>
+                </div>
+                <div className="space-y-2">
+                  {PRESET_TEMPLATES.map((tmpl) => (
+                    <button
+                      key={tmpl.id}
+                      onClick={() => applyPreset(tmpl)}
+                      className="w-full text-left p-2.5 bg-zinc-950/70 hover:bg-zinc-800 border border-zinc-800 rounded-xl transition-all flex items-center gap-3 group"
+                    >
+                      <i className={`${tmpl.icon} text-amber-400 text-base`}></i>
+                      <div className="overflow-hidden">
+                        <div className="font-bold text-xs text-zinc-200 group-hover:text-amber-400 transition-colors">{tmpl.name}</div>
+                        <div className="text-[10px] text-zinc-500 truncate">{tmpl.title}</div>
                       </div>
-                    ))}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Upload Boxes Panel */}
+              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-4">
+                <h3 className="font-bold text-xs text-zinc-200 flex items-center gap-2">
+                  <i className="fa-solid fa-user text-amber-400"></i> Upload & Pengaturan Foto / Logo
+                </h3>
+
+                {/* Upload Foto Profil */}
+                <div className="space-y-2 border border-zinc-800 p-3 rounded-xl bg-zinc-950/40">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] font-bold text-zinc-300">Foto Profil / Orang (Opsional)</label>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">✨ AI Auto Adjust</span>
+                  </div>
+                  <div className="border border-dashed border-zinc-800 hover:border-amber-500/50 bg-zinc-950 rounded-xl p-4 text-center cursor-pointer transition-all">
+                    <i className="fa-solid fa-cloud-arrow-up text-zinc-500 text-base mb-1"></i>
+                    <p className="text-[11px] font-semibold text-zinc-300">Upload Foto Profil Orang</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-400 mb-0.5">Pakaian / Outfit AI</label>
+                      <select value={personOutfit} onChange={(e) => setPersonOutfit(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-1.5 text-[11px] text-zinc-200">
+                        <option value="Asli / Sesuai Foto">Asli / Sesuai Foto</option>
+                        <option value="Baju Koko & Peci">Baju Koko & Peci</option>
+                        <option value="Jas / Formal Executive">Jas / Formal Executive</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-400 mb-0.5">Ekspresi Wajah</label>
+                      <select value={expression} onChange={(e) => setExpression(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-1.5 text-[11px] text-zinc-200">
+                        <option value="Sangat Kaget">Sangat Kaget</option>
+                        <option value="Khusyuk & Damai">Khusyuk & Damai</option>
+                        <option value="Antusias">Antusias</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Upload Logo */}
+                <div className="space-y-2 border border-zinc-800 p-3 rounded-xl bg-zinc-950/40">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] font-bold text-zinc-300">Upload Logo Channel / Brand</label>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">✨ AI Auto</span>
+                  </div>
+                  <div className="border border-dashed border-zinc-800 hover:border-zinc-700 bg-zinc-950 rounded-xl p-2.5 text-center cursor-pointer text-xs text-zinc-400">
+                    + Tambah Logo Channel / Brand
+                  </div>
+                </div>
+
+                {/* Upload Produk */}
+                <div className="space-y-2 border border-zinc-800 p-3 rounded-xl bg-zinc-950/40">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] font-bold text-zinc-300">Upload Gambar Produk (Maks 5)</label>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">✨ AI Auto</span>
+                  </div>
+                  <div className="border border-dashed border-zinc-800 hover:border-amber-500/50 bg-zinc-950 rounded-xl p-2.5 text-center cursor-pointer text-xs text-zinc-300 font-semibold flex items-center justify-center gap-1">
+                    <i className="fa-solid fa-bag-shopping text-amber-400"></i> + Upload Gambar Produk
                   </div>
                 </div>
               </div>
-            )}
+            </div>
 
-            {/* HISTORY VIEW */}
-            {activeTab === 'history' && (
-              <div className="bg-cardbg border border-bordercolor p-6 rounded-2xl space-y-4">
-                <div className="flex items-center justify-between border-b border-bordercolor pb-4">
-                  <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                    <i className="fa-solid fa-clock-rotate-left text-accent"></i> Riwayat Tersimpan
+            {/* COLUMN 2: MIDDLE FORM CONTROLS (Col 5) */}
+            <div className="lg:col-span-5 space-y-4">
+              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-4">
+                
+                <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+                  <h2 className="font-bold text-xs text-zinc-100 flex items-center gap-2">
+                    <i className="fa-solid fa-font text-amber-400"></i> Pengaturan Teks & Judul
                   </h2>
-                  {historyList.length > 0 && (
-                    <button onClick={clearAllHistory} className="text-xs text-red-400 hover:text-red-300 font-semibold">
-                      Hapus Semua
-                    </button>
+                  <button className="px-3 py-1 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-lg text-[11px] font-bold flex items-center gap-1.5">
+                    <i className="fa-solid fa-wand-magic-sparkles"></i> Smart Title Analysis
+                  </button>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-zinc-300 mb-1">Judul Utama Thumbnail <span className="text-rose-500">*</span></label>
+                  <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 focus:border-amber-500 rounded-xl px-3.5 py-2.5 text-xs font-bold text-zinc-100 outline-none" />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-zinc-400 mb-1">Sub Judul (Opsional)</label>
+                  <input type="text" value={subtitle} onChange={(e) => setSubtitle(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 focus:border-amber-500 rounded-xl px-3.5 py-2 text-xs text-zinc-200 outline-none" />
+                </div>
+
+                {/* Aspect Ratio Cards */}
+                <div>
+                  <label className="block text-xs font-bold text-zinc-300 mb-1.5">Rasio Thumbnail Platform</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { label: 'YouTube 16:9', val: '16:9', size: '1280x720' },
+                      { label: 'Shorts 9:16', val: '9:16', size: '1080x1920' },
+                      { label: 'Instagram 1:1', val: '1:1', size: '1080x1080' },
+                      { label: 'Facebook 4:5', val: '4:5', size: '1080x1350' },
+                      { label: 'Custom', val: 'Custom', size: 'Bebas' }
+                    ].map((item) => (
+                      <button
+                        key={item.val}
+                        type="button"
+                        onClick={() => setAspectRatio(item.val)}
+                        className={`p-2 rounded-xl text-left border text-xs font-bold transition-all ${aspectRatio === item.val ? 'bg-amber-500/10 border-amber-500 text-amber-400' : 'bg-zinc-950 border-zinc-800 text-zinc-400'}`}
+                      >
+                        <div>{item.label}</div>
+                        <div className="text-[9px] text-zinc-500 font-mono">{item.size}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-zinc-400 mb-1">Gaya Visual Thumbnail</label>
+                    <select value={style} onChange={(e) => setStyle(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 outline-none">
+                      <option value="Viral YouTube (Warna Mencolok)">Viral YouTube (Warna Mencolok)</option>
+                      <option value="Spiritual / Keagamaan">Spiritual / Keagamaan</option>
+                      <option value="Finance">Finance & Crypto</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-zinc-400 mb-1">Font Typography</label>
+                    <select value={fontStyle} onChange={(e) => setFontStyle(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 outline-none">
+                      <option value="Bold Impact">Bold Impact</option>
+                      <option value="Modern">Modern Sans</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-bold text-zinc-300">Instruksi Latar Belakang (Background Prompt)</label>
+                    <button type="button" className="px-2.5 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded-lg text-[10px] font-bold">✨ AI Auto Background</button>
+                  </div>
+                  <textarea rows={2} value={bgInstruction} onChange={(e) => setBgInstruction(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-xs text-zinc-200 outline-none"></textarea>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-zinc-400 mb-1">Warna Aksen Dominan</label>
+                    <div className="flex items-center gap-2 bg-zinc-950 border border-zinc-800 p-1.5 rounded-xl">
+                      <input type="color" value={dominantColor} onChange={(e) => setDominantColor(e.target.value)} className="w-6 h-6 rounded cursor-pointer bg-transparent border-0" />
+                      <span className="text-xs font-mono font-bold text-zinc-200">{dominantColor}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-zinc-400 mb-1">Posisi Orang</label>
+                    <select value={personPosition} onChange={(e) => setPersonPosition(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 outline-none">
+                      <option value="Kiri">Kiri</option>
+                      <option value="Tengah">Tengah</option>
+                      <option value="Kanan">Kanan</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Visual Elements Hooks */}
+                <div>
+                  <label className="block text-xs font-bold text-zinc-300 mb-2">Elemen Tambahan Visual Hook (Preset & Manual Ketik)</label>
+                  <form onSubmit={handleAddCustomElement} className="flex gap-2 mb-2">
+                    <input type="text" value={customElementInput} onChange={(e) => setCustomElementInput(e.target.value)} placeholder="Ketik elemen visual hook sendiri (cth: Kitab Suci, Efek Cahaya)..." className="flex-1 bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-1.5 text-xs text-zinc-100 outline-none" />
+                    <button type="submit" className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-zinc-950 text-xs font-bold rounded-xl">+ Tambah</button>
+                  </form>
+                  <div className="grid grid-cols-3 gap-2 max-h-40 overflow-y-auto pr-1">
+                    {EXTRA_ELEMENTS.map((item) => {
+                      const isChecked = selectedElements.includes(item.id);
+                      return (
+                        <button key={item.id} type="button" onClick={() => toggleElement(item.id)} className={`flex items-center gap-2 p-2 rounded-xl text-xs font-semibold border transition-all ${isChecked ? 'bg-amber-500/10 border-amber-500/60 text-zinc-100' : 'bg-zinc-950 border-zinc-800 text-zinc-500'}`}>
+                          <div className={`w-3.5 h-3.5 rounded flex items-center justify-center ${isChecked ? 'bg-amber-500 text-zinc-950' : 'border border-zinc-700'}`}>{isChecked && <i className="fa-solid fa-check text-[9px]"></i>}</div>
+                          <i className={item.icon}></i>
+                          <span className="truncate">{item.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="pt-2 grid grid-cols-2 gap-3">
+                  <button onClick={handleGeneratePrompt} disabled={isGeneratingPrompt} className="py-3 px-4 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-100 font-extrabold rounded-xl text-xs flex items-center justify-center gap-2">
+                    <i className="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+                    <span>Tahap 1: Generate Prompt AI</span>
+                  </button>
+
+                  <button onClick={handleGenerateThumbnail} disabled={isGeneratingImage} className="py-3 px-4 bg-gradient-to-r from-amber-500 via-rose-500 to-indigo-600 hover:opacity-90 text-zinc-950 font-black rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20">
+                    <i className="fa-solid fa-sparkles text-zinc-950"></i>
+                    <span>Tahap 2: Generate Thumbnail</span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+            {/* COLUMN 3: RIGHT PREVIEW PANEL (Col 4) */}
+            <div className="lg:col-span-4 space-y-4">
+              
+              {/* Output Canvas Preview */}
+              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-xs text-zinc-100 flex items-center gap-2">
+                    <i className="fa-solid fa-image text-amber-400"></i> Hasil Thumbnail AI
+                  </h3>
+                </div>
+
+                <div className="relative aspect-video bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden flex items-center justify-center">
+                  {isGeneratingImage ? (
+                    <div className="text-center p-4">
+                      <i className="fa-solid fa-spinner animate-spin text-amber-400 text-xl mb-2"></i>
+                      <p className="text-xs text-zinc-400">Memproses rendering thumbnail...</p>
+                    </div>
+                  ) : generatedImageUrl ? (
+                    <img src={generatedImageUrl} alt="Thumbnail Result" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="text-center p-6 text-zinc-500">
+                      <i className="fa-solid fa-image text-3xl mb-2 opacity-30"></i>
+                      <p className="text-xs font-medium text-zinc-400">Belum ada thumbnail yang dibuat</p>
+                      <p className="text-[10px] text-zinc-600 mt-0.5">Klik 'Tahap 2: Generate Thumbnail' untuk mulai</p>
+                    </div>
                   )}
                 </div>
-                {historyList.length === 0 ? (
-                  <p className="text-xs text-gray-500 italic text-center py-10">Belum ada riwayat thumbnail yang disimpan.</p>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {historyList.map((item) => (
-                      <div key={item.id} className="bg-darkbg border border-bordercolor rounded-xl overflow-hidden">
-                        <img src={item.image} alt={item.title} className="w-full aspect-video object-cover" />
-                        <div className="p-3.5 space-y-2">
-                          <h4 className="font-bold text-xs text-white truncate">{item.title}</h4>
-                          <div className="flex items-center justify-between text-[11px] text-gray-500 pt-2 border-t border-bordercolor">
-                            <span>{item.date}</span>
-                            <button onClick={() => deleteHistoryItem(item.id)} className="text-red-400 hover:text-red-300">
-                              <i className="fa-solid fa-trash-can"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
-            )}
 
-            {/* EDITOR VIEW */}
-            {activeTab === 'editor' && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                
-                {/* LEFT: FORM CONTROLS */}
-                <div className="lg:col-span-6 space-y-5">
-                  <div className="bg-cardbg border border-bordercolor rounded-2xl p-5 space-y-4">
-                    <h3 className="text-sm font-bold text-white flex items-center gap-2 border-b border-bordercolor pb-3">
-                      <i className="fa-solid fa-pen-to-square text-accent"></i> Teks & Pengaturan Utama
-                    </h3>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-300 mb-1.5">Judul Utama Thumbnail</label>
-                      <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className="w-full bg-darkbg border border-bordercolor rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-accent"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-300 mb-1.5">Sub Judul (Opsional)</label>
-                      <input
-                        type="text"
-                        value={subtitle}
-                        onChange={(e) => setSubtitle(e.target.value)}
-                        className="w-full bg-darkbg border border-bordercolor rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-accent"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-300 mb-1.5">Ukuran (Ratio)</label>
-                        <select
-                          value={aspectRatio}
-                          onChange={(e) => setAspectRatio(e.target.value)}
-                          className="w-full bg-darkbg border border-bordercolor rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-accent"
-                        >
-                          <option value="16:9">16:9 — Landscape (YouTube)</option>
-                          <option value="9:16">9:16 — Portrait (Shorts/TikTok)</option>
-                          <option value="1:1">1:1 — Square (Feed IG)</option>
-                          <option value="4:5">4:5 — Portrait (Post Social)</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-300 mb-1.5">Gaya Visual</label>
-                        <select
-                          value={style}
-                          onChange={(e) => setStyle(e.target.value)}
-                          className="w-full bg-darkbg border border-bordercolor rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-accent"
-                        >
-                          <option value="Viral YouTube">Viral YouTube</option>
-                          <option value="Spiritual / Keagamaan">Spiritual / Keagamaan</option>
-                          <option value="Finance">Finance & Crypto</option>
-                          <option value="Technology">Technology</option>
-                          <option value="Gaming">Gaming</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-300 mb-1.5">Deskripsi Background</label>
-                      <textarea
-                        rows="3"
-                        value={bgInstruction}
-                        onChange={(e) => setBgInstruction(e.target.value)}
-                        className="w-full bg-darkbg border border-bordercolor rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accent"
-                      ></textarea>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-300 mb-1.5">Warna Dominan</label>
-                        <div className="flex items-center gap-2 bg-darkbg border border-bordercolor p-1.5 rounded-xl">
-                          <input
-                            type="color"
-                            value={dominantColor}
-                            onChange={(e) => setDominantColor(e.target.value)}
-                            className="w-7 h-7 rounded cursor-pointer bg-transparent border-0"
-                          />
-                          <span className="text-xs font-mono text-gray-300">{dominantColor}</span>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-300 mb-1.5">Posisi Model/Orang</label>
-                        <select
-                          value={personPosition}
-                          onChange={(e) => setPersonPosition(e.target.value)}
-                          className="w-full bg-darkbg border border-bordercolor rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-accent"
-                        >
-                          <option value="Kiri">Kiri</option>
-                          <option value="Tengah">Tengah</option>
-                          <option value="Kanan">Kanan</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="pt-2 grid grid-cols-2 gap-3">
-                      <button
-                        onClick={handleGeneratePrompt}
-                        disabled={isGeneratingPrompt}
-                        className="w-full bg-[#1e293b] hover:bg-bordercolor text-gray-200 font-bold py-3 rounded-xl transition text-xs flex items-center justify-center gap-2"
-                      >
-                        <i className="fa-solid fa-wand-magic-sparkles text-accent"></i>
-                        <span>Buat Prompt AI</span>
-                      </button>
-
-                      <button
-                        onClick={handleGenerateThumbnail}
-                        disabled={isGeneratingImage}
-                        className="w-full bg-accent hover:bg-accenthover text-white font-bold py-3 rounded-xl transition shadow-lg shadow-accent/20 text-xs flex items-center justify-center gap-2"
-                      >
-                        <i className="fa-solid fa-image"></i>
-                        <span>Generate Thumbnail</span>
-                      </button>
-                    </div>
+              {/* Output Prompt Box */}
+              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-xs text-zinc-200 flex items-center gap-2">
+                    <i className="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Output Prompt AI
+                  </h3>
+                  <div className="flex items-center gap-1.5">
+                    <button className="px-2.5 py-1 bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 rounded-lg text-[10px] font-bold flex items-center gap-1">
+                      <i className="fa-solid fa-bolt text-[9px]"></i> Boost
+                    </button>
+                    <button className="px-2.5 py-1 bg-zinc-800 text-zinc-300 rounded-lg text-[10px] font-bold flex items-center gap-1">
+                      <i className="fa-solid fa-copy text-[9px]"></i> Copy
+                    </button>
                   </div>
                 </div>
 
-                {/* RIGHT: OUTPUT & PREVIEW */}
-                <div className="lg:col-span-6 space-y-5">
-                  <div className="bg-cardbg border border-bordercolor rounded-2xl p-5 space-y-3">
-                    <div className="flex items-center justify-between border-b border-bordercolor pb-3">
-                      <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                        <i className="fa-solid fa-display text-accent"></i> Preview Result
-                      </h3>
-                      {ctrScore && (
-                        <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
-                          Est. CTR: {ctrScore}%
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="relative aspect-video bg-darkbg border border-bordercolor rounded-xl overflow-hidden flex items-center justify-center">
-                      {isGeneratingImage ? (
-                        <div className="text-center p-4">
-                          <i className="fa-solid fa-spinner animate-spin text-accent text-2xl mb-2"></i>
-                          <p className="text-xs text-gray-400">Rendering Canvas Visual...</p>
-                        </div>
-                      ) : generatedImageUrl ? (
-                        <img src={generatedImageUrl} alt="Thumbnail Preview" className="w-full h-full object-cover" />
-                      ) : (
-                        <p className="text-xs text-gray-500 italic">Klik tombol Generate untuk melihat hasil thumbnail.</p>
-                      )}
-                    </div>
-
-                    {generatedImageUrl && (
-                      <div className="flex gap-2 pt-2">
-                        <button onClick={() => handleDownload('png')} className="flex-1 bg-darkbg border border-bordercolor hover:border-accent text-white text-xs py-2 rounded-xl font-semibold transition">
-                          Download PNG
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="bg-cardbg border border-bordercolor rounded-2xl p-5 space-y-3">
-                    <div className="flex items-center justify-between border-b border-bordercolor pb-3">
-                      <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                        <i className="fa-solid fa-terminal text-accent"></i> Compiled Prompt
-                      </h3>
-                      {generatedPrompt && (
-                        <button
-                          onClick={copyPromptToClipboard}
-                          className="text-xs bg-accent/10 border border-accent/30 text-accent px-3 py-1 rounded-lg font-semibold hover:bg-accent/20 transition"
-                        >
-                          {copiedPrompt ? 'Tersalin' : 'Salin Prompt'}
-                        </button>
-                      )}
-                    </div>
-
-                    <div className="bg-darkbg border border-bordercolor rounded-xl p-4 font-mono text-xs text-gray-300 min-h-[120px] max-h-[200px] overflow-y-auto whitespace-pre-wrap select-all">
-                      {generatedPrompt || <span className="text-gray-500 italic select-none">Prompt AI akan muncul di sini...</span>}
-                    </div>
-                  </div>
-                </div>
-
+                <textarea
+                  readOnly
+                  rows={4}
+                  value={generatedPrompt}
+                  placeholder="Klik 'Tahap 1: Generate Prompt AI' untuk melihat prompt terperinci yang dibuat oleh Google Gemini..."
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-xs font-mono text-zinc-400 outline-none resize-none"
+                />
               </div>
-            )}
+
+            </div>
 
           </main>
 
           {/* Footer */}
-          <footer className="border-t border-bordercolor bg-cardbg/50 py-4 text-center text-xs text-gray-500 mt-auto">
-            <p>&copy; {new Date().getFullYear()} AI Thumbnail Maker — Developed by <a href="https://www.buanamedia.my.id" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Buana Media</a>.</p>
+          <footer className="border-t border-zinc-800/80 py-4 px-6 text-center text-xs text-zinc-500 mt-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div><span className="font-bold text-zinc-400">AI Thumbnail Maker</span> &copy; 2026. Powered by Google Gemini.</div>
+            <div>
+              <a href="https://www.buanamedia.my.id" target="_blank" rel="noopener noreferrer" className="text-amber-400 font-bold hover:underline">By Buana Media <i className="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
+            </div>
           </footer>
 
         </div>
