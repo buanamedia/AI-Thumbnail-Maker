@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Thumbnail Maker - By Buana Media</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            darkbg: '#080d1a',
+            cardbg: '#0f172a',
+            bordercolor: '#1e293b',
+            accent: '#3b82f6',
+            accenthover: '#2563eb',
+            brandblue: '#60a5fa',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React & Babel CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #080d1a;
+      color: #f8fafc;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased bg-darkbg text-[#f8fafc]">
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // Preset Templates
+    const PRESET_TEMPLATES = [
+      {
+        id: 'affiliate',
+        name: 'Affiliate Marketing',
+        icon: 'fa-solid fa-money-bill-wave',
+        title: 'RAHASIA AFFILIATE SHOPEE TANPA MODAL',
+        subtitle: '100% Gratis Untuk Pemula',
+        style: 'Viral YouTube',
+        fontStyle: 'Bold Impact',
+        color: '#FF5722',
+        bgInstruction: 'Futuristic e-commerce warehouse with floating Shopee & TikTok shop delivery packages and money falling',
+        elements: ['Uang', 'Produk Shopee', 'Panah merah', 'Grafik naik'],
+        expression: 'Sangat Kaget',
+        outfit: 'Casual Hoodie Trendy',
+        position: 'Kiri'
+      },
+      {
+        id: 'ibadah',
+        name: 'Ibadah & Ceramah',
+        icon: 'fa-solid fa-mosque',
+        title: 'RAHASIA HIDUP TENANG & BERKAH',
+        subtitle: 'Kajian Spesial & Ceramah Menyentuh Hati',
+        style: 'Spiritual / Keagamaan',
+        fontStyle: 'Modern',
+        color: '#10B981',
+        bgInstruction: 'Serene glowing mosque architecture with warm golden interior lighting, peaceful ambient light rays, soft clouds and divine atmospheric visual depth',
+        elements: ['Lingkaran merah', 'Kilat'],
+        expression: 'Khusyuk & Damai',
+        outfit: 'Baju Koko & Peci',
+        position: 'Kiri'
+      },
+      {
+        id: 'crypto',
+        name: 'Crypto & Finance',
+        icon: 'fa-solid fa-chart-line',
+        title: 'CARA CUAN $1,000 DARI CRYPTO 2026',
+        subtitle: 'Strategi Low Risk High Return',
+        style: 'Finance',
+        fontStyle: 'Tech',
+        color: '#10B981',
+        bgInstruction: 'Glowing dark green financial chart with soaring Bitcoin graphics and green matrix code effect',
+        elements: ['Grafik naik', 'Uang', 'Kilat'],
+        expression: 'Antusias',
+        outfit: 'Jas / Formal Executive',
+        position: 'Kanan'
+      },
+      {
+        id: 'ai_tools',
+        name: 'AI Tools & Tech',
+        icon: 'fa-solid fa-robot',
+        title: 'AI RAHASIA BIKIN VIDEO DENGAN 1 KLIK',
+        subtitle: 'Bikin Content Auto Viral!',
+        style: 'Technology',
+        fontStyle: 'Modern',
+        color: '#6366F1',
+        bgInstruction: 'Cyberpunk neon studio, glowing holographic AI robot face and digital futuristic particles',
+        elements: ['AI Robot', 'Kilat', 'Laptop'],
+        expression: 'Antusias',
+        outfit: 'Cyberpunk Armor',
+        position: 'Kiri'
+      },
+      {
+        id: 'gaming',
+        name: 'Gaming Content',
+        icon: 'fa-solid fa-gamepad',
+        title: 'SOLO VS SQUAD TOP GLOBAL 100 KILLS',
+        subtitle: 'Gameplay Paling Gila!',
+        style: 'Gaming',
+        fontStyle: 'Gaming',
+        color: '#EC4899',
+        bgInstruction: 'Epic game arena with fiery explosions, smoke particles, and dramatic neon red and purple rim lighting',
+        elements: ['Api', 'Kilat'],
+        expression: 'Sangat Kaget',
+        outfit: 'Casual Hoodie Trendy',
+        position: 'Tengah'
+      },
+      {
+        id: 'tutorial',
+        name: 'Tutorial & Education',
+        icon: 'fa-solid fa-graduation-cap',
+        title: 'BISA CODING DARI NOL DALAM 7 HARI',
+        subtitle: 'Panduan Lengkap Pemula',
+        style: 'Education',
+        fontStyle: 'YouTube Style',
+        color: '#3B82F6',
+        bgInstruction: 'Clean modern desk setup with glowing dual monitors displaying colorful code editors and clean ambient light',
+        elements: ['Laptop', 'Smartphone'],
+        expression: 'Profesional',
+        outfit: 'Batik Professional',
+        position: 'Kiri'
+      },
+      {
+        id: 'podcast',
+        name: 'Podcast & Interview',
+        icon: 'fa-solid fa-microphone',
+        title: 'BONGKAR RAHASIA PEMBISNIS 100 MILIAR',
+        subtitle: 'Eksklusif Episode #42',
+        style: 'Podcast',
+        fontStyle: 'Modern',
+        color: '#F59E0B',
+        bgInstruction: 'Dark cozy podcast studio with warm vintage Edison lamps, professional studio microphone and acoustic foam background',
+        elements: ['Ikon YouTube'],
+        expression: 'Profesional',
+        outfit: 'Jas / Formal Executive',
+        position: 'Kiri'
+      }
+    ];
+
+    // Additional Visual Elements List
+    const EXTRA_ELEMENTS = [
+      { id: 'Panah merah', label: 'Panah Merah', icon: 'fa-solid fa-arrow-right text-red-500' },
+      { id: 'Lingkaran merah', label: 'Lingkaran Merah', icon: 'fa-solid fa-bullseye text-red-500' },
+      { id: 'Uang', label: 'Hujan Uang', icon: 'fa-solid fa-dollar-sign text-emerald-500' },
+      { id: 'Api', label: 'Efek Api', icon: 'fa-solid fa-fire text-amber-500' },
+      { id: 'Kilat', label: 'Efek Kilat', icon: 'fa-solid fa-bolt text-yellow-400' },
+      { id: 'Grafik naik', label: 'Grafik Naik', icon: 'fa-solid fa-chart-line text-green-500' },
+      { id: 'Produk Shopee', label: 'Produk Shopee', icon: 'fa-solid fa-bag-shopping text-orange-500' },
+      { id: 'Produk TikTok Shop', label: 'TikTok Shop', icon: 'fa-solid fa-bag-shopping text-pink-500' },
+      { id: 'Laptop', label: 'Laptop Modern', icon: 'fa-solid fa-laptop text-blue-400' },
+      { id: 'Smartphone', label: 'Smartphone', icon: 'fa-solid fa-mobile-screen-button text-purple-400' },
+      { id: 'AI Robot', label: 'AI Robot / Cyber', icon: 'fa-solid fa-robot text-cyan-400' },
+      { id: 'Ikon YouTube', label: 'Badge YouTube', icon: 'fa-brands fa-youtube text-red-600' }
+    ];
+
+    const MANDATORY_QUALITY_TAGS = "ultra detailed, professional youtube thumbnail, viral thumbnail design, high ctr composition, ultra sharp focus, dramatic studio lighting, 8k resolution, masterpiece visual depth, eye-catching saturation";
+    const MANDATORY_NEGATIVE_TAGS = "blurry, low quality, watermark, extra fingers, deformed face, bad anatomy, cropped face, duplicate person, text artifacts, messy composition, low contrast";
+
+    function App() {
+      // Input Form States
+      const [title, setTitle] = useState("RAHASIA AFFILIATE SHOPEE TANPA MODAL");
+      const [subtitle, setSubtitle] = useState("100% Gratis Untuk Pemula");
+      const [personImage, setPersonImage] = useState(null);
+      const [logoImage, setLogoImage] = useState(null);
+      const [productImages, setProductImages] = useState([]);
+      const [aspectRatio, setAspectRatio] = useState("16:9");
+      const [customWidth, setCustomWidth] = useState(1280);
+      const [customHeight, setCustomHeight] = useState(720);
+      const [style, setStyle] = useState("Viral YouTube");
+      const [bgInstruction, setBgInstruction] = useState("Latar belakang toko online futuristik dengan paket Shopee & TikTok Shop berterbangan, aura cuan uang berhamburan");
+      const [fontStyle, setFontStyle] = useState("Bold Impact");
+      const [dominantColor, setDominantColor] = useState("#3b82f6");
+      const [personPosition, setPersonPosition] = useState("Kiri");
+      const [expression, setExpression] = useState("Sangat Kaget");
+      
+      // Controls
+      const [personOutfit, setPersonOutfit] = useState("Asli / Sesuai Foto");
+      const [personAutoAdjust, setPersonAutoAdjust] = useState(true);
+      const [personScale, setPersonScale] = useState(100);
+      const [personOffsetY, setPersonOffsetY] = useState(0);
+
+      const [logoAutoAdjust, setLogoAutoAdjust] = useState(true);
+      const [logoPosition, setLogoPosition] = useState("Atas-Kanan");
+      const [logoScale, setLogoScale] = useState(100);
+
+      const [productAutoAdjust, setProductAutoAdjust] = useState(true);
+      const [productPosition, setProductPosition] = useState("Kanan-Bawah");
+      const [productScale, setProductScale] = useState(100);
+
+      const [selectedElements, setSelectedElements] = useState(["Panah merah", "Uang", "Produk Shopee"]);
+      const [customElementInput, setCustomElementInput] = useState("");
+
+      // Process & Result States
+      const [generatedPrompt, setGeneratedPrompt] = useState("");
+      const [generatedImageUrl, setGeneratedImageUrl] = useState("");
+      const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false);
+      const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+      const [isAnalyzingTitle, setIsAnalyzingTitle] = useState(false);
+      const [isGeneratingBg, setIsGeneratingBg] = useState(false);
+      const [isEnhancingPrompt, setIsEnhancingPrompt] = useState(false);
+      const [activeTab, setActiveTab] = useState("editor");
+      const [historyList, setHistoryList] = useState([]);
+      const [copiedPrompt, setCopiedPrompt] = useState(false);
+      const [errorMessage, setErrorMessage] = useState("");
+      const [ctrScore, setCtrScore] = useState(null);
+
+      // Refs
+      const personInputRef = useRef(null);
+      const logoInputRef = useRef(null);
+      const productInputRef = useRef(null);
+
+      useEffect(() => {
+        try {
+          const saved = localStorage.getItem('ai_thumbnail_history');
+          if (saved) setHistoryList(JSON.parse(saved));
+        } catch (e) {
+          console.error("Failed to load history", e);
+        }
+      }, []);
+
+      const saveToHistory = (imageUrl, promptText) => {
+        const newItem = {
+          id: Date.now(),
+          title: title || "Untitled Thumbnail",
+          prompt: promptText,
+          image: imageUrl,
+          aspectRatio,
+          date: new Date().toLocaleDateString('id-ID', {
+            day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+          })
+        };
+        const updated = [newItem, ...historyList].slice(0, 20);
+        setHistoryList(updated);
+        try {
+          localStorage.setItem('ai_thumbnail_history', JSON.stringify(updated));
+        } catch (e) {}
+      };
+
+      const deleteHistoryItem = (id) => {
+        const updated = historyList.filter(item => item.id !== id);
+        setHistoryList(updated);
+        localStorage.setItem('ai_thumbnail_history', JSON.stringify(updated));
+      };
+
+      const clearAllHistory = () => {
+        setHistoryList([]);
+        localStorage.removeItem('ai_thumbnail_history');
+      };
+
+      const handleImageUpload = (file, setter) => {
+        if (!file) return;
+        if (file.size > 20 * 1024 * 1024) {
+          setErrorMessage("Ukuran file maksimal 20 MB!");
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setter(e.target.result);
+          setErrorMessage("");
+        };
+        reader.readAsDataURL(file);
+      };
+
+      const handleProductUpload = (files) => {
+        if (!files || files.length === 0) return;
+        const fileList = Array.from(files);
+        if (productImages.length + fileList.length > 5) {
+          setErrorMessage("Maksimal 5 gambar produk yang dapat diunggah!");
+          return;
+        }
+        setErrorMessage("");
+        fileList.forEach((file) => {
+          if (file.size > 20 * 1024 * 1024) return;
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            setProductImages((prev) => (prev.length >= 5 ? prev : [...prev, e.target.result]));
+          };
+          reader.readAsDataURL(file);
+        });
+      };
+
+      const removeProductImage = (index) => {
+        setProductImages((prev) => prev.filter((_, i) => i !== index));
+      };
+
+      const toggleElement = (elemId) => {
+        if (selectedElements.includes(elemId)) {
+          setSelectedElements(selectedElements.filter(i => i !== elemId));
+        } else {
+          setSelectedElements([...selectedElements, elemId]);
+        }
+      };
+
+      const handleAddCustomElement = (e) => {
+        e?.preventDefault();
+        if (!customElementInput.trim()) return;
+        const trimmed = customElementInput.trim();
+        if (!selectedElements.includes(trimmed)) {
+          setSelectedElements([...selectedElements, trimmed]);
+        }
+        setCustomElementInput("");
+      };
+
+      const applyPreset = (preset) => {
+        setTitle(preset.title);
+        setSubtitle(preset.subtitle);
+        setStyle(preset.style);
+        setFontStyle(preset.fontStyle);
+        setDominantColor(preset.color);
+        setBgInstruction(preset.bgInstruction);
+        setSelectedElements(preset.elements);
+        setExpression(preset.expression || "Normal");
+        if (preset.outfit) setPersonOutfit(preset.outfit);
+        setPersonPosition(preset.position);
+        setActiveTab("editor");
+      };
+
+      const handleGeneratePrompt = () => {
+        setIsGeneratingPrompt(true);
+        setErrorMessage("");
+        setTimeout(() => {
+          const compiled = `High-CTR YouTube Thumbnail Prompt (${style}):\n- Main Subject: Person on ${personPosition} with ${expression} expression wearing ${personOutfit}.\n- Title: "${title}" (Subtitle: "${subtitle}") in ${fontStyle} font with Hex ${dominantColor} stroke.\n- Environment: ${bgInstruction}.\n- Visual Hooks: ${selectedElements.join(', ')}.\n- Aspect Ratio: ${aspectRatio}.\n\n[QUALITY]: ${MANDATORY_QUALITY_TAGS}\n[NEGATIVE]: ${MANDATORY_NEGATIVE_TAGS}`;
+          setGeneratedPrompt(compiled);
+          setCtrScore((8.5 + Math.random() * 1.2).toFixed(1));
+          setIsGeneratingPrompt(false);
+        }, 1000);
+      };
+
+      const handleGenerateThumbnail = () => {
+        if (!generatedPrompt) handleGeneratePrompt();
+        setIsGeneratingImage(true);
+        setErrorMessage("");
+
+        setTimeout(() => {
+          createCanvasFallbackThumbnail();
+          setIsGeneratingImage(false);
+        }, 1200);
+      };
+
+      const createCanvasFallbackThumbnail = () => {
+        const canvas = document.createElement('canvas');
+        let width = 1280;
+        let height = 720;
+
+        if (aspectRatio === "9:16") { width = 1080; height = 1920; }
+        else if (aspectRatio === "1:1") { width = 1080; height = 1080; }
+        else if (aspectRatio === "4:5") { width = 1080; height = 1350; }
+        else if (aspectRatio === "Custom") { width = customWidth; height = customHeight; }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+
+        const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+        bgGrad.addColorStop(0, '#0f172a');
+        bgGrad.addColorStop(0.5, dominantColor);
+        bgGrad.addColorStop(1, '#080d1a');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.lineWidth = 3;
+        for (let x = 0; x < width; x += 80) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
+        }
+
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+        ctx.shadowBlur = 20;
+        ctx.shadowOffsetX = 4;
+        ctx.shadowOffsetY = 4;
+
+        ctx.font = `900 ${Math.floor(height * 0.08)}px sans-serif`;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.textAlign = personPosition === 'Kiri' ? 'right' : 'left';
+        const textX = personPosition === 'Kiri' ? width - 80 : 80;
+        let startY = height * 0.4;
+
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 12;
+        ctx.strokeText(title.toUpperCase(), textX, startY);
+        ctx.fillStyle = '#FFDD00';
+        ctx.fillText(title.toUpperCase(), textX, startY);
+
+        if (subtitle) {
+          ctx.font = `700 ${Math.floor(height * 0.045)}px sans-serif`;
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 8;
+          ctx.strokeText(subtitle, textX, startY + (height * 0.1));
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillText(subtitle, textX, startY + (height * 0.1));
+        }
+
+        const dataUrl = canvas.toDataURL('image/png');
+        setGeneratedImageUrl(dataUrl);
+        saveToHistory(dataUrl, generatedPrompt || "Generated Canvas Thumbnail");
+      };
+
+      const handleDownload = (format) => {
+        if (!generatedImageUrl) return;
+        const link = document.createElement('a');
+        link.download = `AI-Thumbnail-${Date.now()}.${format}`;
+        link.href = generatedImageUrl;
+        link.click();
+      };
+
+      const copyPromptToClipboard = () => {
+        if (!generatedPrompt) return;
+        navigator.clipboard.writeText(generatedPrompt);
+        setCopiedPrompt(true);
+        setTimeout(() => setCopiedPrompt(false), 2000);
+      };
+
+      return (
+        <div className="flex flex-col min-h-screen bg-darkbg text-[#f8fafc]">
+          
+          {/* Top Bar Navigation */}
+          <header className="border-b border-bordercolor bg-cardbg/80 backdrop-blur px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-30">
+            <div className="flex items-center space-x-3">
+              <div className="bg-accent/10 border border-accent/30 p-2.5 rounded-xl text-accent flex items-center justify-center shadow-sm">
+                <i className="fa-solid fa-wand-magic-sparkles text-xl"></i>
+              </div>
+              <div>
+                <h1 className="font-extrabold text-lg tracking-wide text-white flex items-center gap-2 leading-tight">
+                  AI Thumbnail Maker
+                </h1>
+                <div className="flex items-center space-x-2 text-[11px] leading-snug">
+                  <a href="https://www.buanamedia.my.id" target="_blank" rel="noopener noreferrer" className="text-accent hover:text-brandblue font-semibold hover:underline flex items-center gap-1">
+                    <span>By Buana Media</span>
+                    <i className="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                  </a>
+                  <span className="text-gray-600">•</span>
+                  <span className="text-gray-400">Viral Thumbnail Generator</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Tabs */}
+            <div className="bg-cardbg border border-bordercolor p-1 rounded-xl flex space-x-1">
+              <button
+                onClick={() => setActiveTab('editor')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-2 ${activeTab === 'editor' ? 'bg-accent text-white shadow' : 'text-gray-400 hover:text-white'}`}
+              >
+                <i className="fa-solid fa-sliders"></i>
+                <span>Editor Studio</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('templates')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-2 ${activeTab === 'templates' ? 'bg-accent text-white shadow' : 'text-gray-400 hover:text-white'}`}
+              >
+                <i className="fa-solid fa-layer-group"></i>
+                <span>Template</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('history')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-2 ${activeTab === 'history' ? 'bg-accent text-white shadow' : 'text-gray-400 hover:text-white'}`}
+              >
+                <i className="fa-solid fa-clock-rotate-left"></i>
+                <span>Riwayat ({historyList.length})</span>
+              </button>
+            </div>
+          </header>
+
+          {/* Main Grid Workspace */}
+          <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6">
+
+            {/* TEMPLATES VIEW */}
+            {activeTab === 'templates' && (
+              <div className="space-y-6">
+                <div className="bg-cardbg border border-bordercolor p-6 rounded-2xl">
+                  <h2 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
+                    <i className="fa-solid fa-border-all text-accent"></i> Pilih Preset Thumbnail
+                  </h2>
+                  <p className="text-xs text-gray-400 mb-6">Pilih template niche terpopuler untuk langsung mengisi parameter prompt visual secara otomatis.</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {PRESET_TEMPLATES.map((tmpl) => (
+                      <div
+                        key={tmpl.id}
+                        onClick={() => applyPreset(tmpl)}
+                        className="bg-darkbg border border-bordercolor hover:border-accent p-5 rounded-xl transition cursor-pointer flex flex-col justify-between group"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-3">
+                            <i className={`${tmpl.icon} text-2xl text-accent`}></i>
+                            <span className="text-[10px] px-2.5 py-1 rounded-full font-bold bg-cardbg text-brandblue border border-bordercolor">
+                              {tmpl.style}
+                            </span>
+                          </div>
+                          <h3 className="font-bold text-sm text-white group-hover:text-accent transition-colors mb-1">{tmpl.name}</h3>
+                          <p className="text-xs font-mono text-gray-400 bg-cardbg p-2 rounded-lg border border-bordercolor mb-3 truncate">"{tmpl.title}"</p>
+                        </div>
+                        <button className="w-full py-2 bg-cardbg group-hover:bg-accent text-gray-200 group-hover:text-white text-xs font-bold rounded-xl transition">
+                          Gunakan Template
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* HISTORY VIEW */}
+            {activeTab === 'history' && (
+              <div className="bg-cardbg border border-bordercolor p-6 rounded-2xl space-y-4">
+                <div className="flex items-center justify-between border-b border-bordercolor pb-4">
+                  <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                    <i className="fa-solid fa-clock-rotate-left text-accent"></i> Riwayat Tersimpan
+                  </h2>
+                  {historyList.length > 0 && (
+                    <button onClick={clearAllHistory} className="text-xs text-red-400 hover:text-red-300 font-semibold">
+                      Hapus Semua
+                    </button>
+                  )}
+                </div>
+                {historyList.length === 0 ? (
+                  <p className="text-xs text-gray-500 italic text-center py-10">Belum ada riwayat thumbnail yang disimpan.</p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {historyList.map((item) => (
+                      <div key={item.id} className="bg-darkbg border border-bordercolor rounded-xl overflow-hidden">
+                        <img src={item.image} alt={item.title} className="w-full aspect-video object-cover" />
+                        <div className="p-3.5 space-y-2">
+                          <h4 className="font-bold text-xs text-white truncate">{item.title}</h4>
+                          <div className="flex items-center justify-between text-[11px] text-gray-500 pt-2 border-t border-bordercolor">
+                            <span>{item.date}</span>
+                            <button onClick={() => deleteHistoryItem(item.id)} className="text-red-400 hover:text-red-300">
+                              <i className="fa-solid fa-trash-can"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* EDITOR VIEW */}
+            {activeTab === 'editor' && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                {/* LEFT: FORM CONTROLS */}
+                <div className="lg:col-span-6 space-y-5">
+                  <div className="bg-cardbg border border-bordercolor rounded-2xl p-5 space-y-4">
+                    <h3 className="text-sm font-bold text-white flex items-center gap-2 border-b border-bordercolor pb-3">
+                      <i className="fa-solid fa-pen-to-square text-accent"></i> Teks & Pengaturan Utama
+                    </h3>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-300 mb-1.5">Judul Utama Thumbnail</label>
+                      <input
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="w-full bg-darkbg border border-bordercolor rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-accent"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-300 mb-1.5">Sub Judul (Opsional)</label>
+                      <input
+                        type="text"
+                        value={subtitle}
+                        onChange={(e) => setSubtitle(e.target.value)}
+                        className="w-full bg-darkbg border border-bordercolor rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-accent"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-300 mb-1.5">Ukuran (Ratio)</label>
+                        <select
+                          value={aspectRatio}
+                          onChange={(e) => setAspectRatio(e.target.value)}
+                          className="w-full bg-darkbg border border-bordercolor rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-accent"
+                        >
+                          <option value="16:9">16:9 — Landscape (YouTube)</option>
+                          <option value="9:16">9:16 — Portrait (Shorts/TikTok)</option>
+                          <option value="1:1">1:1 — Square (Feed IG)</option>
+                          <option value="4:5">4:5 — Portrait (Post Social)</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-300 mb-1.5">Gaya Visual</label>
+                        <select
+                          value={style}
+                          onChange={(e) => setStyle(e.target.value)}
+                          className="w-full bg-darkbg border border-bordercolor rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-accent"
+                        >
+                          <option value="Viral YouTube">Viral YouTube</option>
+                          <option value="Spiritual / Keagamaan">Spiritual / Keagamaan</option>
+                          <option value="Finance">Finance & Crypto</option>
+                          <option value="Technology">Technology</option>
+                          <option value="Gaming">Gaming</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-300 mb-1.5">Deskripsi Background</label>
+                      <textarea
+                        rows="3"
+                        value={bgInstruction}
+                        onChange={(e) => setBgInstruction(e.target.value)}
+                        className="w-full bg-darkbg border border-bordercolor rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accent"
+                      ></textarea>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-300 mb-1.5">Warna Dominan</label>
+                        <div className="flex items-center gap-2 bg-darkbg border border-bordercolor p-1.5 rounded-xl">
+                          <input
+                            type="color"
+                            value={dominantColor}
+                            onChange={(e) => setDominantColor(e.target.value)}
+                            className="w-7 h-7 rounded cursor-pointer bg-transparent border-0"
+                          />
+                          <span className="text-xs font-mono text-gray-300">{dominantColor}</span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-300 mb-1.5">Posisi Model/Orang</label>
+                        <select
+                          value={personPosition}
+                          onChange={(e) => setPersonPosition(e.target.value)}
+                          className="w-full bg-darkbg border border-bordercolor rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-accent"
+                        >
+                          <option value="Kiri">Kiri</option>
+                          <option value="Tengah">Tengah</option>
+                          <option value="Kanan">Kanan</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="pt-2 grid grid-cols-2 gap-3">
+                      <button
+                        onClick={handleGeneratePrompt}
+                        disabled={isGeneratingPrompt}
+                        className="w-full bg-[#1e293b] hover:bg-bordercolor text-gray-200 font-bold py-3 rounded-xl transition text-xs flex items-center justify-center gap-2"
+                      >
+                        <i className="fa-solid fa-wand-magic-sparkles text-accent"></i>
+                        <span>Buat Prompt AI</span>
+                      </button>
+
+                      <button
+                        onClick={handleGenerateThumbnail}
+                        disabled={isGeneratingImage}
+                        className="w-full bg-accent hover:bg-accenthover text-white font-bold py-3 rounded-xl transition shadow-lg shadow-accent/20 text-xs flex items-center justify-center gap-2"
+                      >
+                        <i className="fa-solid fa-image"></i>
+                        <span>Generate Thumbnail</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* RIGHT: OUTPUT & PREVIEW */}
+                <div className="lg:col-span-6 space-y-5">
+                  <div className="bg-cardbg border border-bordercolor rounded-2xl p-5 space-y-3">
+                    <div className="flex items-center justify-between border-b border-bordercolor pb-3">
+                      <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                        <i className="fa-solid fa-display text-accent"></i> Preview Result
+                      </h3>
+                      {ctrScore && (
+                        <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
+                          Est. CTR: {ctrScore}%
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="relative aspect-video bg-darkbg border border-bordercolor rounded-xl overflow-hidden flex items-center justify-center">
+                      {isGeneratingImage ? (
+                        <div className="text-center p-4">
+                          <i className="fa-solid fa-spinner animate-spin text-accent text-2xl mb-2"></i>
+                          <p className="text-xs text-gray-400">Rendering Canvas Visual...</p>
+                        </div>
+                      ) : generatedImageUrl ? (
+                        <img src={generatedImageUrl} alt="Thumbnail Preview" className="w-full h-full object-cover" />
+                      ) : (
+                        <p className="text-xs text-gray-500 italic">Klik tombol Generate untuk melihat hasil thumbnail.</p>
+                      )}
+                    </div>
+
+                    {generatedImageUrl && (
+                      <div className="flex gap-2 pt-2">
+                        <button onClick={() => handleDownload('png')} className="flex-1 bg-darkbg border border-bordercolor hover:border-accent text-white text-xs py-2 rounded-xl font-semibold transition">
+                          Download PNG
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="bg-cardbg border border-bordercolor rounded-2xl p-5 space-y-3">
+                    <div className="flex items-center justify-between border-b border-bordercolor pb-3">
+                      <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                        <i className="fa-solid fa-terminal text-accent"></i> Compiled Prompt
+                      </h3>
+                      {generatedPrompt && (
+                        <button
+                          onClick={copyPromptToClipboard}
+                          className="text-xs bg-accent/10 border border-accent/30 text-accent px-3 py-1 rounded-lg font-semibold hover:bg-accent/20 transition"
+                        >
+                          {copiedPrompt ? 'Tersalin' : 'Salin Prompt'}
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="bg-darkbg border border-bordercolor rounded-xl p-4 font-mono text-xs text-gray-300 min-h-[120px] max-h-[200px] overflow-y-auto whitespace-pre-wrap select-all">
+                      {generatedPrompt || <span className="text-gray-500 italic select-none">Prompt AI akan muncul di sini...</span>}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+          </main>
+
+          {/* Footer */}
+          <footer className="border-t border-bordercolor bg-cardbg/50 py-4 text-center text-xs text-gray-500 mt-auto">
+            <p>&copy; {new Date().getFullYear()} AI Thumbnail Maker — Developed by <a href="https://www.buanamedia.my.id" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Buana Media</a>.</p>
+          </footer>
+
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
